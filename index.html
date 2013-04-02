@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>GIVit</title>
+	<link rel="stylesheet" href="css/givit.css"/>
+</head>
+<body>
+
+	<div id="header">
+		<img src="images/logo.png" id="logo">
+		<h2 class="heading">GIVit <span class="lighter"> is a github issues viewer.</h2>
+		<h2 class="heading subtitle">it can tell you <i>whatsammatah</i> with projects, like Rails.</h2>
+	</div>
+
+	<div id="givit-app">
+		<interface>
+			<div class="pagination">
+				<a class="nav button first" page="1">&laquo; First</a>
+				<a class="nav button prev"  page="2">&lsaquo; Prev</a>
+				<a class="nav button next"  page="3">Next &rsaquo; </a>
+				<a class="nav button last"  page="4">Last &raquo;</a>
+				<span>Page <span class="current-page">0</span> of <span class="total-pages">0</span></span>
+			</div>
+			<table id="issue-list" border="1" cellpadding="6">
+				<thead><tr><th>No.</th><th>Title</th><th>Labels</th><th>User</th><th>Issue</th></tr></thead><tbody></tbody>
+			</table>
+		</interface>
+
+		<div id="footer">
+			<p class="right"><a onclick="scrollToTop()">Back to top</a></p>
+			<p class="left">&copy; 2013 Harold Rodriguez &middot; <a href="mailto:harold@planetharold.com">Contact</a> &middot; 
+			<a class="transparent" onclick="easteregg(1)">Nothing to click here!</a></p>
+		</div>
+	</div>
+
+
+	<!-- Scripts. Loaded at the end to speed up visuals. -->
+	<script src="js/lib/json2.js"></script>
+	<script src="js/lib/jquery.js"></script>
+	<script src="js/lib/underscore.js"></script>
+	<script src="js/lib/backbone.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/givit.js"></script>
+
+	<!-- Templates. We should serve these through a CDN so they can get loaded quickly and cached locally, but inline will do. -->
+	<script type="text/template" id="template-issuebasic">
+		<td class="viewdetails"><%- number %></td>
+		<td class="viewdetails"><%- title %></td>
+		<td class="viewdetails center"><% _.each(labels, function(label) { %><span class="label" style="background-color:#<%- label.color %>; <% if (label.color.match(/FFF|eded/i)) { %><%- 'color:black' %><% } %>;"><%- label.name %></span><% }); %> </td>
+		<td  class="viewdetails center"><img src="https://secure.gravatar.com/avatar/<%- user.gravatar_id %>?s=48" /><br><%- user.login %></td>
+		<td class="viewdetails" width="80%"><%- ampersify(body.substring(0,140).replace(/\s+\w+$/,'').replace(/(.{70})/g,'$1&#8203;')) %><br><% if (comments) { %><a class="scrolltocomments"><%- comments %> comment<%- (comments > 1 ? 's' : '') %></a><% } %></td>
+	</script>
+	<script type="text/template" id="template-issuedetails">
+		<a class="button viewdetails" id="back">&laquo; Back to Issues</a>
+		<table id="issue-list" border="1" cellpadding="6"><thead><tr><th>Title</th><th>Summary</th><th>State</th><th>Labels</th><th>User</th></tr></thead><tbody>
+		<td><b><%- number %></b>: <%- title %></td>
+		<td class="wrap" style="width: 60%"><%= ampersify(body.replace(/(.{70})/g,'$1&#8203;')) %><% if (comments) { %><hr>Comments (<%- comments %>): <div id="comments"></div><% } %></td>
+		<td><%- state %></td>
+		<td class="center"><% _.each(labels, function(label) { %><span class="label" style="background-color:#<%- label.color %>; <% if (label.color.match(/FFF|eded/i)) { %><%- 'color:black' %><% } %>;"><%- label.name %></span><% }); %> </td>
+		<td class="center"><a target="_blank" href="https://github.com/<%- user.login %>"><img src="https://secure.gravatar.com/avatar/<%- user.gravatar_id %>?s=48" /><br /><%- user.login %></a></td>
+		</tbody>
+		</table>
+	</script>
+	<script type="text/template" id="template-comment">
+		<div class="comment">
+			<img src="https://secure.gravatar.com/avatar/<%- user.gravatar_id %>?s=48" />
+			<div class="commentheader"><div class="left"><a target="_blank" href="https://github.com/<%- user.login %>"><%- user.login %></a> commented</div><div class="right">Posted <%- created_at %></div></div>
+			<div class="commentbody"><%= ampersify(body) %></div>
+		</div>
+	</script>
+
+	</body>
+</html>
