@@ -17,3 +17,5 @@ Pull requests and questions/comments [welcome].
 [live demo]:http://planetharold.com/projects/givit
 [Backbone]:http://backbonejs.org/
 [welcome]:mailto:harold@planetharold.com
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hwrod/givit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
